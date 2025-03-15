@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(uuid())
+  firebaseId        String          @unique
+  email             String          @unique
+  name             String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  volunteerProfile VolunteerProfile?
+}
+
+model VolunteerProfile {
+  userId   String  @id
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills   String[]
+  phone    String  // Volunteer contact phone number
+  location String?
+}
+
+model Organization {
+  id                     String @id @default(uuid())
+  name                   String
+  description            String?
+  focusArea              String?
+  location               String?
+  contactNumber          String?
+  emailAddress           String?
+  website                String?
+  speciesSpecialization  String?
+  servicesOffered        String?
+  operatingHours         String?
+  geographicalCoverage   String?
+  affiliations           String?
+  emergencyResponse      String?
+  volunteerOpportunities String?
+  educationalPrograms    String?
+  licensesCertifications String?
+  fundingSources        String?
+  successStories         String?
+  googleMapLocation      Json?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
