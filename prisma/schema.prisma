@@ -9,27 +9,28 @@ datasource db {
 
 model User {
   id               String            @id @default(uuid())
-  firebaseId        String          @unique
-  email             String          @unique
+  firebaseId       String            @unique
+  email            String            @unique
   name             String?
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   volunteerProfile VolunteerProfile?
 }
 
 model VolunteerProfile {
-  userId   String  @id
-  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String   @id
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   skills   String[]
-  phone    String  // Volunteer contact phone number
+  phone    String // Volunteer contact phone number
   location String?
 }
 
 model Organization {
-  id                     String @id @default(uuid())
+  id                     String   @id @default(uuid())
   name                   String
   description            String?
   focusArea              String?
+  summary                String?
   location               String?
   contactNumber          String?
   emailAddress           String?
@@ -43,7 +44,7 @@ model Organization {
   volunteerOpportunities String?
   educationalPrograms    String?
   licensesCertifications String?
-  fundingSources        String?
+  fundingSources         String?
   successStories         String?
   googleMapLocation      Json?
   createdAt              DateTime @default(now())

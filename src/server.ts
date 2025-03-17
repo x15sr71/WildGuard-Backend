@@ -5,6 +5,8 @@ import admin from "firebase-admin";
 import { PrismaClient } from "@prisma/client";
 import { authenticate, AuthenticatedRequest } from "./middlewares/middlewares";
 import { findOrCreateUser } from "./services/userService";
+import { detectAnimalLabels } from "./services/visionService";
+import { handleGeminiRequest } from "./LLM/geminiRequest";
 
 dotenv.config();
 
@@ -35,6 +37,9 @@ app.get("/", (req: Request, res: Response) => {
   console.log("Public route '/' hit");
   res.send("🚀 Firebase Auth Server is Running!");
 });
+
+// Endpoint to analyze an image
+app.post('/gemini', handleGeminiRequest);
 
 // 🔒 Protected Route (Example)
 app.get("/protected", authenticate, (req: AuthenticatedRequest, res: Response) => {

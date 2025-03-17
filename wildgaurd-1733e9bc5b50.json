@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "wildgaurd",
+  "private_key_id": "1733e9bc5b50b5c6e937057ca4dabbd249051c2c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDGbGwaPwapTXQg\nzuihhXEGTXZAMzZxbXTziXeKGoVfQt3HmaunvveqcboC33Z+btTSBKmTGK+3pi1C\nWIeUoqZE5Nb/szLsnNlMQUTX9jtJs9nNyp9OQcYQIn7SFEBBby9day7hefWFUEL7\nenvG5U0zmxI3Pl3Ho86aMr/g7STHwuQwhFqDM7tF9SXmNPjL0BIY0kwPH1cIFs+7\nZD9au1LRlVETTVmatHxXmX0X/it2OiOgbjheFU/GX5U8xq+VHU7RMyrLLxPWb5oc\nidwSQOw90KjdnnlTa2U6r3MxSGOoMHIePt6kZ3Ot65wOQGLEebW8fv7y27+biqMO\nuenU8VHbAgMBAAECggEAAKGarHCz5Dj/XBVcbxseE2+Op0CidTTscNPoofNYpkdv\nrjFiduuoHQ40kcrFNTzEB5EFOxcShAqOzU27zLDBx6lUt8aJrHAJTvFMN0WsxZzB\nXiK9ZAHYj/eUILX4yFyCsZDkOsppCg4J0IQAvc6/8qCVK8DSio6OWzY7HwuSGOKX\n6LDqWgsF90rkvf7sx47AFd4d6DNzluYGKtubQm9wHbwLNs2K/zKNr56IlquX3NT1\nh9gE2WRqWy3ifDGDW5KA71k4CTuej803JJty7aweUC9/0PHPqaucKdflDk8WiK0U\n94D5d9+YNWuKC6OtQYKrJKOkPQSOP2WS6tLtVKTNXQKBgQDstKUz8Uv69+jLCQWB\niYQdvR/p4PObQV7jDO1BAORWWuZ3DkKADOHrydXd8F7fjTdateRfxCRE5C9XUGjf\nllgFgL9Mnbjr1wxUgj5tcrAcGNK/AM/aCs59KLzL/9JaETs/O/LjfSBy4BJjCrE3\nDE+JATH5KoE3DdEV+U8cNTvN/wKBgQDWmPDmxj2v9JcOQuOd9OhTXoSd9AXtr91K\nwSjiD1B6GmZ5Ndbp1ZaLbi9qG7wcHgajGIVPzwbWlcSbJDv8F39KuT38UX3Ge6vH\n+BweDWXbb4FJs4TSQsC3oOrLxxQBSNllu7FPchjb85tCnf3Nj71TB7CgSsFYHPwU\n4go60At0JQKBgFbjhNUJWUO55vlIyX2gdh/YgbN/gMzX9TXRU/INmsPcQEcps91/\nXRsJjvkWOC1FkDE7HabNwCaNwJcDjEuuy4bRmOdN6kigOwV2feX9OIpHzmyQpru6\nRcwJvSwBLz0ioCX5IpLBJr0kZXt3vE+htDxtdOOq553G855mUtTe8aIPAoGBALo+\ndiTzPCpvjoH0D3PRT6i7SUGEvXhxvw7X4VGAlQnDy9e6oFDE7CkKceAXPgTxEjWO\nXHTNalPmG4HBysWY5wLFDkTjvNL8FjQw4sY6PoJZnc2HHekVwggcgmpk1rnerb6b\nTOF0VpreK4t/bvxumZNsAyC6gF6mmSjOnK46TRZ5AoGANVWgvXfsp6UFdFcLdpgz\ngCH4sKXCINS0OWEraCp+/p40/DeXYboxANyji3gOimcMhrso3nI75S4Eb88b0V5+\n17TjbSPilHDV1IUk/3nAYjyftA8Y1oPsLGlDNNAct3E3clctpPRAW3ciFKD541YP\ny8tNt+8g/jerhORfEKY1VhY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "wildgaurd-service@wildgaurd.iam.gserviceaccount.com",
+  "client_id": "101455090222500227887",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/wildgaurd-service%40wildgaurd.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
