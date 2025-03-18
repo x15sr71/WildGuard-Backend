@@ -4,14 +4,15 @@ import { geminiImageInfo } from '../LLM/ImageInfo';
 import { imageInfoSummary } from '../LLM/ImageInfoSummary';
 import prisma from '../../prisma/prisma';
 import { fetchOrganizations } from '../util/fetchOrgInfo';
-import { Organization } from '@prisma/client';
+import { getClosestOrgs } from '../util/nearbyLocationCal';
+//import { getClosestOrgs } from '../util/nearbyLocationCal';
 
 dotenv.config();
 
 type NGO = {
-    name: string;
-    googleMapLocation: { latitude: number; longitude: number };
-  };
+  name: string;
+  googleMapLocation: { latitude: number; longitude: number };
+};
 let imageInfoPrompt = "Identify the exact species of the animal in this image. Begin with a short paragraph (around 50 words) providing general information about the species. Then, check if the animal is injured. If injured, provide a step-by-step guide on first aid and immediate care before the volunteer reaches an NGO. Include its legal status and the safest, most ethical way to transport it to the NGO. Then, describe its natural habitat, diet, and behavior. Additionally, provide detailed care instructions, including proper handling, feeding, and ensuring its well-being in a safe and ethical manner, all in a structured points format.";
 let imageInfoSummaryPrompt = "Below is detailed information about an animal. Please condense the details into a concise, information-dense summary that captures essential characteristics such as habitat, behavior, physical attributes, and conservation status. The resulting summary should be optimized for an AI to accurately match this animal with the best NGO or organization by comparing it with their summarized information."
 let bestNgoMatchPrompt = `"Below is detailed information about an animal species, followed by a list of NGOs with their respective names and summaries. Evaluate the provided data and rank the NGOs based on how well their mission, expertise, and focus align with the needs of the animal species. Your response should present the NGOs in descending order of suitability (the best suited first) and must be formatted in JSON.
@@ -43,43 +44,76 @@ Ensure that your ranking reflects the compatibility between the animal species d
 `;
 
 export const imageResponse = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-        const image = req.body.image;
-        const imageSummary = await geminiImageInfo(image, imageInfoPrompt);
-        imageInfoSummaryPrompt = imageInfoSummaryPrompt + imageSummary.text;
-
-        const animalInfoSummary = await imageInfoSummary(imageInfoSummaryPrompt);
-
-        const allNgo = await prisma.organization.findMany({
-            select: {
-                name: true,
-                summary: true
-            }
-        });
-
-        const ngoJson: string = JSON.stringify({ allNgo }, null, 2);
-        bestNgoMatchPrompt = bestNgoMatchPrompt + animalInfoSummary + ngoJson;
-
-        const bestNgoMatchResponse = await imageInfoSummary(bestNgoMatchPrompt);
-        //console.log(bestNgoMatchResponse)
-                // Preprocess the response to remove Markdown code block syntax
-                const cleanedResponse = bestNgoMatchResponse?.replace(/```json/g, "").replace(/```/g, "").trim();
-
-        const bestNgoMatch = typeof cleanedResponse === 'string' ? JSON.parse(cleanedResponse) : bestNgoMatchResponse;
-        //console.log(bestNgoMatch)
-        const organizationNames = bestNgoMatch.rankings.map((org: any) => org.name);
-        console.log(organizationNames)
-        const allNgoData = await fetchOrganizations(organizationNames)
-        const extractNGOLocations = (ngos: any[]): NGO[] => {
-          return ngos.map(({ name, googleMapLocation }) => ({ name, googleMapLocation }));
-        };
-        console.log("Location extracted", extractNGOLocations(allNgoData));
-
-        res.json({
-            done: "done"
-        });
-    } catch (error) {
-        console.error("Error in imageResponse:", error);
-        next(error);
+  try {
+    let userLocation = await prisma.user.findFirst({
+      where: { id: "7e5beb5e-fa49-4878-b6f4-8f28b272c4bc" },
+      select: { currentLocation: true }
+    });
+    
+    // Ensure userLocation and currentLocation are not null before parsing
+    if (!userLocation?.currentLocation) {
+      throw new Error("User location not found or invalid.");
     }
+    const { latitude, longitude } = JSON.parse(userLocation.currentLocation);
+    
+    console.log("User current location is fetched: ", userLocation)
+    const image = req.body.image;
+    const imageSummary = await geminiImageInfo(image, imageInfoPrompt);
+    imageInfoSummaryPrompt = imageInfoSummaryPrompt + imageSummary.text;
+
+    const animalInfoSummary = await imageInfoSummary(imageInfoSummaryPrompt);
+
+    const allNgo = await prisma.organization.findMany({
+      select: {
+        name: true,
+        summary: true
+      }
+    });
+
+    const ngoJson: string = JSON.stringify({ allNgo }, null, 2);
+    bestNgoMatchPrompt = bestNgoMatchPrompt + animalInfoSummary + ngoJson;
+
+    const bestNgoMatchResponse = await imageInfoSummary(bestNgoMatchPrompt);
+    //console.log(bestNgoMatchResponse)
+    // Preprocess the response to remove Markdown code block syntax
+    const cleanedResponse = bestNgoMatchResponse?.replace(/```json/g, "").replace(/```/g, "").trim();
+
+    const bestNgoMatch = typeof cleanedResponse === 'string' ? JSON.parse(cleanedResponse) : bestNgoMatchResponse;
+    //console.log(bestNgoMatch)
+    const organizationNames = bestNgoMatch.rankings.map((org: any) => org.name);
+    //console.log(organizationNames)
+    const allNgoData = await fetchOrganizations(organizationNames)
+    const extractNGOLocations = (ngos: any[]): NGO[] => {
+      return ngos.map(({ name, googleMapLocation }) => ({ name, googleMapLocation }));
+    };
+    //console.log(extractNGOLocations(allNgoData))
+    const closeOrgs = getClosestOrgs(extractNGOLocations(allNgoData), {latitude, longitude});
+    //console.log(allNgoData)
+    //console.log(closeOrgs)
+    let finalResponse = (await closeOrgs).map(org => {
+      // Find the matching organization details in allNgoData by name
+      const matchingOrg = allNgoData.find((ngo: any) => ngo.name === org.name);
+      if (matchingOrg) {
+        return {
+          ...org,
+          location: matchingOrg.location,
+          emergencyResponse: matchingOrg.emergencyResponse,
+          contactNumber: matchingOrg.contactNumber,
+          emailAddress: matchingOrg.emailAddress,
+          website: matchingOrg.website,
+          focusArea: matchingOrg.focusArea,
+          operatingHours: matchingOrg.operatingHours
+        };
+      }
+      // Return the org as-is if no match is found (this case can be omitted if all names should match)
+      return org;
+    });
+    finalResponse = [{ imageSummary: imageSummary.text } as any, ...finalResponse];
+    
+    console.log("Enriched closeOrgs:", finalResponse);
+    res.json(finalResponse);
+  } catch (error) {
+    console.error("Error in imageResponse:", error);
+    next(error);
+  }
 };
