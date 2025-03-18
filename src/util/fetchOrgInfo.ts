@@ -16,6 +16,7 @@ export async function fetchOrganizations(organizationNames: any) {
       );
   
       console.log('Ordered Organizations:', orderedOrganizations);
+      return orderedOrganizations;
     } catch (error) {
       console.error('Error fetching organizations:', error);
     } finally {

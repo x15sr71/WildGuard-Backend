@@ -17,28 +17,8 @@ const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
     return R * c; // Distance in km
 };
 
-export const getClosestNGOs = async (req: Request, res: Response) => {
+export const getClosestNGOs = async () => {
     try {
-        const { latitude, longitude } = req.body;  // User's location
-
-        if (!latitude || !longitude) {
-            return res.status(400).json({ error: "Latitude and Longitude are required" });
-        }
-
-        // Fetch all NGOs with lat/lon
-        const ngos = await prisma.organization.findMany({
-            select: {
-                id: true,
-                name: true,
-                latitude: true,
-                longitude: true
-            }
-        });
-
-        if (ngos.length === 0) {
-            return res.status(404).json({ message: "No NGOs found" });
-        }
-
         // Calculate distance for each NGO and sort by closest
         const sortedNGOs = ngos
             .map(ngo => ({
@@ -48,10 +28,10 @@ export const getClosestNGOs = async (req: Request, res: Response) => {
             .sort((a, b) => a.distance - b.distance) // Sort ascending (closest first)
             .slice(0, 5); // Get top 5 closest NGOs
 
-        res.json({ closestNGOs: sortedNGOs });
+        //res.json({ closestNGOs: sortedNGOs });
 
     } catch (error) {
         console.error("Error fetching closest NGOs:", error);
-        res.status(500).json({ error: "Internal Server Error" });
+        ///res.status(500).json({ error: "Internal Server Error" });
     }
 };

@@ -70,7 +70,11 @@ export const imageResponse = async (req: Request, res: Response, next: NextFunct
         const organizationNames = bestNgoMatch.rankings.map((org: any) => org.name);
         console.log(organizationNames)
         const allNgoData = await fetchOrganizations(organizationNames)
-          
+        const extractNGOLocations = (ngos: any[]): NGO[] => {
+          return ngos.map(({ name, googleMapLocation }) => ({ name, googleMapLocation }));
+        };
+        console.log("Location extracted", extractNGOLocations(allNgoData));
+
         res.json({
             done: "done"
         });
