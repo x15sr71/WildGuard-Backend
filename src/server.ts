@@ -6,7 +6,9 @@ import { PrismaClient } from "@prisma/client";
 import { authenticate, AuthenticatedRequest } from "./middlewares/middlewares";
 import { findOrCreateUser } from "./services/userService";
 import { detectAnimalLabels } from "./services/visionService";
-import { handleGeminiRequest } from "./LLM/geminiRequest";
+import { geminiImageInfo } from "./LLM/ImageInfo";
+import { imageResponse } from "./services/imageResponse";
+import { saveUserLocation } from "./util/userLocation";
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.post("/location", saveUserLocation)
+
 // ✅ Public Route
 app.get("/", (req: Request, res: Response) => {
   console.log("Public route '/' hit");
@@ -39,7 +43,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Endpoint to analyze an image
-app.post('/gemini', handleGeminiRequest);
+app.post('/gemini', imageResponse);
 
 // 🔒 Protected Route (Example)
 app.get("/protected", authenticate, (req: AuthenticatedRequest, res: Response) => {

@@ -12,6 +12,7 @@ model User {
   firebaseId       String            @unique
   email            String            @unique
   name             String?
+  currentLocation  String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   volunteerProfile VolunteerProfile?
