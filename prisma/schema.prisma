@@ -18,13 +18,29 @@ model User {
   volunteerProfile VolunteerProfile?
 }
 
+
 model VolunteerProfile {
-  userId   String   @id
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  skills   String[]
-  phone    String // Volunteer contact phone number
-  location String?
+  userId         String           @id
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skills         String[]
+  phone          String           // Volunteer contact phone number
+  location       String?
+  helpPosts      AnimalHelpPost[] // Relation to AnimalHelpPost
 }
+
+model AnimalHelpPost {
+  id                String   @id @default(uuid())
+  volunteerId       String
+  volunteer         VolunteerProfile @relation(fields: [volunteerId], references: [userId], onDelete: Cascade)
+  images            String[] // Store image URLs in an array
+  description       String
+  incidentLocation  String  // Location where the animal was found
+  noticedAt         DateTime // When the volunteer noticed the animal
+  currentActions    String   // What the volunteer is doing right now to help
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
 
 model Organization {
   id                     String   @id @default(uuid())
