@@ -2,13 +2,11 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
-import { PrismaClient } from "@prisma/client";
 import { authenticate, AuthenticatedRequest } from "./middlewares/middlewares";
 import { findOrCreateUser } from "./services/userService";
-import { detectAnimalLabels } from "./services/visionService";
-import { geminiImageInfo } from "./LLM/ImageInfo";
 import { imageResponse } from "./services/imageResponse";
 import { saveUserLocation } from "./util/userLocation";
+import { createAnimalHelpPost } from "./services/concernPost";
 
 dotenv.config();
 
@@ -33,6 +31,8 @@ app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   next();
 });
+
+app.post("/animalHelpPost", createAnimalHelpPost)
 
 app.post("/location", saveUserLocation)
 
