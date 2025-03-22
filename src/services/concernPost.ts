@@ -28,7 +28,7 @@ export const createAnimalHelpPost = async (req: Request, res: Response, next: Ne
         // Create new animal help post
         const newPost = await prisma.animalHelpPost.create({
             data: {
-                volunteerId,
+                volunteerId: "7e5beb5e-fa49-4878-b6f4-8f28b272c4bc",
                 images: images || [],
                 description,
                 incidentLocation,

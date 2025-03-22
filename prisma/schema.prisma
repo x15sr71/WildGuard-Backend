@@ -12,7 +12,8 @@ model User {
   firebaseId       String            @unique
   email            String            @unique
   name             String?
-  currentLocation  String?
+  imageUrl         String?
+  currentLocation  Json?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   volunteerProfile VolunteerProfile?
@@ -23,6 +24,8 @@ model VolunteerProfile {
   userId         String           @id
   user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   skills         String[]
+  imageUrl       String?
+  email          String?          // Volunteer contact email
   phone          String           // Volunteer contact phone number
   location       String?
   helpPosts      AnimalHelpPost[] // Relation to AnimalHelpPost
@@ -34,7 +37,7 @@ model AnimalHelpPost {
   volunteer         VolunteerProfile @relation(fields: [volunteerId], references: [userId], onDelete: Cascade)
   images            String[] // Store image URLs in an array
   description       String
-  incidentLocation  String  // Location where the animal was found
+  incidentLocation  Json?  // Location where the animal was found
   noticedAt         DateTime // When the volunteer noticed the animal
   currentActions    String   // What the volunteer is doing right now to help
   createdAt         DateTime @default(now())
