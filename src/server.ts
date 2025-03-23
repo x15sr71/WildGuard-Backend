@@ -8,6 +8,7 @@ import { imageResponse } from "./services/imageResponse";
 import { saveUserLocation } from "./util/userLocation";
 import { createAnimalHelpPost } from "./services/concernPost";
 import { handlePostRequest } from "./services/postRequestHandler";
+import { volunteerProfileHandler } from "./services/volunteerProfileHandler";
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ console.log("✅ Firebase initialized successfully!");
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+app.post("/volunteer-profile", authenticate, volunteerProfileHandler);
 
 // Global logger for every incoming request
 app.use((req, res, next) => {

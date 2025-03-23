@@ -25,21 +25,23 @@ model VolunteerProfile {
   user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   skills         String[]
   imageUrl       String?
-  email          String?          // Volunteer contact email
-  phone          String           // Volunteer contact phone number
-  location       String?
-  helpPosts      AnimalHelpPost[] // Relation to AnimalHelpPost
+  email          String?          
+  phone          String           
+  location       Json?  // Still stored as JSON for Prisma
+  geoLocation    String? @default("") // Used for raw SQL queries
+  helpPosts      AnimalHelpPost[]
 }
 
 model AnimalHelpPost {
   id                String   @id @default(uuid())
   volunteerId       String
   volunteer         VolunteerProfile @relation(fields: [volunteerId], references: [userId], onDelete: Cascade)
-  images            String[] // Store image URLs in an array
+  images            String[] 
   description       String
-  incidentLocation  Json?  // Location where the animal was found
-  noticedAt         DateTime // When the volunteer noticed the animal
-  currentActions    String   // What the volunteer is doing right now to help
+  incidentLocation  Json?  // Still stored as JSON for Prisma
+  geoLocation       String? @default("") // Used for raw SQL queries
+  noticedAt         DateTime 
+  currentActions    String   
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
