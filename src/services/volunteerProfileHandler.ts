@@ -1,9 +1,8 @@
 // volunteerProfileHandler.ts
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../prisma/prisma";
 import { AuthenticatedRequest } from "../middlewares/middlewares"; // Adjust the path as needed
 
-const prisma = new PrismaClient();
 
 export const volunteerProfileHandler = async (
   req: AuthenticatedRequest,
@@ -16,8 +15,9 @@ export const volunteerProfileHandler = async (
 
   try {
     // Extract profile data from request body
-    const { currentLocation, skills, phone } = req.body;
+    const { currentLocation, skills, phone, } = req.body;
     console.log("Request body:", req.body); // Log the request body
+    console.log(req)
 
     // Find the user in your database using firebaseId from the decoded token
     const user = await prisma.user.findUnique({

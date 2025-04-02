@@ -5,12 +5,13 @@ import admin from "firebase-admin";
 import { authenticate, AuthenticatedRequest } from "./middlewares/middlewares";
 import { findOrCreateUser } from "./services/userService";
 import { imageResponse } from "./services/imageResponse";
-import { saveUserLocation } from "./util/userLocation";
+// import { saveUserLocation } from "./util/userLocation";
 import { createAnimalHelpPost } from "./services/concernPost";
 import { handlePostRequest } from "./services/postRequestHandler";
 import { volunteerProfileHandler } from "./services/volunteerProfileHandler";
 
 dotenv.config();
+
 
 // Ensure all required environment variables are set
 if (
@@ -25,8 +26,14 @@ if (
 console.log("✅ Firebase initialized successfully!");
 
 const app = express();
-app.use(express.json());
+
+app.use(express.json({ limit: '100mb' })); // Move to top and increase limit
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(cors());
+
+
+
+
 
 app.post("/volunteer-profile", authenticate, volunteerProfileHandler);
 
@@ -42,7 +49,7 @@ app.post("/api/post-request", async (req, res) => {
 
 app.post("/animalHelpPost", createAnimalHelpPost)
 
-app.post("/location", saveUserLocation)
+// app.post("/location", saveUserLocation)
 
 // ✅ Public Route
 app.get("/", (req: Request, res: Response) => {
@@ -51,7 +58,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Endpoint to analyze an image
-app.post('/gemini', imageResponse);
+app.post("/gemini", express.raw({ limit: '100mb', type: 'image/*' }), imageResponse);
 
 // 🔒 Protected Route (Example)
 app.get("/protected", authenticate, (req: AuthenticatedRequest, res: Response) => {

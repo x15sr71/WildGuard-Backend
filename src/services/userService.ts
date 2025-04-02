@@ -33,6 +33,7 @@ export async function findOrCreateUser(
       firebaseId: decodedToken.uid,
       email: decodedToken.email || "",
       name: decodedToken.name || "",
+      imageUrl: decodedToken.picture || undefined, // Optional
       // Extend your Prisma model if you need to store a profile picture.
     },
   });
@@ -41,6 +42,7 @@ export async function findOrCreateUser(
     firebaseId: user.firebaseId,
     email: user.email,
     name: user.name,
+    imageUrl: user.imageUrl,
   });
 
   return user;

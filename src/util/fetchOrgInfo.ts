@@ -1,6 +1,7 @@
 import prisma from "../../prisma/prisma";
 
 export async function fetchOrganizations(organizationNames: any) {
+  console.log("Fetching organizations for names:", organizationNames);
     try {
       const organizations = await prisma.organization.findMany({
         where: {
@@ -9,7 +10,7 @@ export async function fetchOrganizations(organizationNames: any) {
           },
         },
       });
-  
+      console.log(`**********************************${organizations}*******************************`)
       // Reorder results to match organizationNames order
       const orderedOrganizations = organizationNames.map((name: any) =>
         organizations.find((org) => org.name === name) || null

@@ -5,6 +5,7 @@ import { imageInfoSummary } from '../LLM/ImageInfoSummary';
 import prisma from '../../prisma/prisma';
 import { fetchOrganizations } from '../util/fetchOrgInfo';
 import { getClosestOrgs } from '../util/nearbyLocationCal';
+import { all } from 'axios';
 
 dotenv.config();
 
@@ -42,40 +43,38 @@ Ensure your response follows this format:
   ]
 }
 
-Ensure that your ranking reflects the compatibility between the animal species data and each NGO's focus, with clear justification provided in the 'reason' field for each NGO."
+Ensure that your ranking reflects the compatibility between the animal species data and each NGO's focus, with clear justification provided in the 'reason' field for each NGO. NOTE: always return in the above format, if not able to make rankings, simply return nothing but in above format."
 `;
 
 export const imageResponse = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    // Fetch the user and ensure currentLocation exists
-    const userLocation = await prisma.user.findFirst({
-      where: { id: "7e5beb5e-fa49-4878-b6f4-8f28b272c4bc" },
-      select: { currentLocation: true }
-    });
-    
-    if (!userLocation?.currentLocation) {
-      throw new Error("User location not found or invalid.");
-    }
+  const firebaseId = req.headers['x-firebase-id'];
+  console.log("*********************");
+  console.log("Firebase ID from headers:", firebaseId);
 
-    // Safely extract latitude and longitude
+  try {
+    // Fetch the location directly from req.body.location
+    const userCurrentLocation = req.body.location;
+    console.log("User current location is fetched: ", userCurrentLocation);
+
+    // Safely extract latitude and longitude from userCurrentLocation
     let latitude: number, longitude: number;
-    if (typeof userLocation.currentLocation === "string") {
+    if (typeof userCurrentLocation === "string") {
       try {
-        const parsed = JSON.parse(userLocation.currentLocation) as { latitude: number; longitude: number };
+        const parsed = JSON.parse(userCurrentLocation) as { latitude: number; longitude: number };
         latitude = parsed.latitude;
         longitude = parsed.longitude;
       } catch (err) {
-        throw new Error("Invalid JSON in userLocation.currentLocation");
+        throw new Error("Invalid JSON in req.body.location");
       }
-    } else if (typeof userLocation.currentLocation === "object" && userLocation.currentLocation !== null) {
-      const locationObj = userLocation.currentLocation as { latitude: number; longitude: number };
+    } else if (typeof userCurrentLocation === "object" && userCurrentLocation !== null) {
+      const locationObj = userCurrentLocation as { latitude: number; longitude: number };
       latitude = locationObj.latitude;
       longitude = locationObj.longitude;
     } else {
-      throw new Error("userLocation.currentLocation is not in a valid format");
+      throw new Error("req.body.location is not in a valid format");
     }
 
-    console.log("User current location is fetched: ", userLocation);
+    console.log("Parsed location: ", { latitude, longitude });
     
     const image = req.body.image;
     const imageSummary = await geminiImageInfo(image, imageInfoPrompt);
@@ -90,25 +89,33 @@ export const imageResponse = async (req: Request, res: Response, next: NextFunct
       }
     });
 
+    console.log("All NGOs: ", allNgo);
+
     const ngoJson: string = JSON.stringify({ allNgo }, null, 2);
     bestNgoMatchPrompt = bestNgoMatchPrompt + animalInfoSummary + ngoJson;
 
     const bestNgoMatchResponse = await imageInfoSummary(bestNgoMatchPrompt);
     // Remove markdown code block syntax if present
     const cleanedResponse = bestNgoMatchResponse?.replace(/```json/g, "").replace(/```/g, "").trim();
-
+    console.log("Best NGO Match Response: ", cleanedResponse);
     const bestNgoMatch = typeof cleanedResponse === 'string' ? JSON.parse(cleanedResponse) : bestNgoMatchResponse;
     const organizationNames = bestNgoMatch.rankings.map((org: any) => org.name);
 
     const allNgoData = await fetchOrganizations(organizationNames);
+    console.log(`*********************************${allNgoData}*******************************`)
     const extractNGOLocations = (ngos: any[]): NGO[] => {
-      return ngos.map(({ name, googleMapLocation }) => ({ name, googleMapLocation }));
+      return ngos
+        .filter((ngo) => ngo && ngo.name && ngo.googleMapLocation) // Filter out invalid/undefined ngos
+        .map(({ name, googleMapLocation }) => ({ name, googleMapLocation }));
     };
+    
 
     const closeOrgs = getClosestOrgs(extractNGOLocations(allNgoData), { latitude, longitude });
 
+    console.log("Closest Orgs:", closeOrgs);
+
     let finalResponse = (await closeOrgs).map(org => {
-      const matchingOrg = allNgoData.find((ngo: any) => ngo.name === org.name);
+      const matchingOrg = allNgoData.find((ngo: any) => ngo?.name === org?.name);
       if (matchingOrg) {
         return {
           ...org,
@@ -121,8 +128,10 @@ export const imageResponse = async (req: Request, res: Response, next: NextFunct
           operatingHours: matchingOrg.operatingHours
         };
       }
-      return org;
+      console.warn(`No match found for NGO: ${org.name}`);
+      return org; // Return org without additional properties
     });
+    
     finalResponse = [{ imageSummary: imageSummary.text } as any, ...finalResponse];
     
     console.log("Enriched closeOrgs:", finalResponse);
