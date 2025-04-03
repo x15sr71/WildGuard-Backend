@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Prisma } from "@prisma/client"; // Import Prisma types
 import prisma from "../../prisma/prisma";
 
 export const handlePostRequest = async (req: Request, res: Response) => {
@@ -19,7 +20,7 @@ export const handlePostRequest = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User does not have a volunteer profile" });
     }
 
-    let parsedIncidentLocation = null;
+    let parsedIncidentLocation: Prisma.NullableJsonNullValueInput | Prisma.InputJsonValue;
 
     if (typeof incidentLocation === "string") {
       try {
@@ -31,7 +32,7 @@ export const handlePostRequest = async (req: Request, res: Response) => {
     } else if (typeof incidentLocation === "object" && incidentLocation !== null) {
       parsedIncidentLocation = incidentLocation;
     } else {
-      return res.status(400).json({ error: "Incident location must be a valid JSON object" });
+      parsedIncidentLocation = Prisma.JsonNull; // FIX: Use Prisma.JsonNull instead of null
     }
 
     // Insert the AnimalHelpPost into the database
