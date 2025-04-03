@@ -13,8 +13,6 @@ RUN npm install
 # Copy the entire project into the container, including the .env file
 COPY . .
 
-# Ensure .env is available
-RUN ls -la .env || echo ".env file is missing"
 
 # Build TypeScript files
 RUN npm run build
