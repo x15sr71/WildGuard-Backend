@@ -6,6 +6,10 @@ export const handlePostRequest = async (req: Request, res: Response) => {
   try {
     const { firebaseId, images, description, incidentLocation, noticedAt, currentActions } = req.body;
 
+    console.log(req.body)
+
+    console.log(noticedAt)
+    console.log("*****************************************")
     // Fetch the user based on Firebase ID
     const user = await prisma.user.findUnique({
       where: { firebaseId },
@@ -42,7 +46,7 @@ export const handlePostRequest = async (req: Request, res: Response) => {
         images,
         description,
         incidentLocation: parsedIncidentLocation,
-        noticedAt: new Date(noticedAt),
+        noticedAt: new Date(req.body.validNoticedAt),
         currentActions,
       },
     });

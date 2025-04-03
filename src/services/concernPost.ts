@@ -5,6 +5,9 @@ export const createAnimalHelpPost = async (req: Request, res: Response, next: Ne
     try {
         const { volunteerId, images, description, incidentLocation, noticedAt, currentActions } = req.body;
         console.log(req.body);
+        console.log("*****************************************")
+        console.log("Volunteer ID:", volunteerId);
+    
 
         // Validate required fields
         if (!volunteerId || !description || !incidentLocation || !noticedAt || !currentActions) {
