@@ -5,7 +5,6 @@ import { imageInfoSummary } from '../LLM/ImageInfoSummary';
 import prisma from '../../prisma/prisma';
 import { fetchOrganizations } from '../util/fetchOrgInfo';
 import { getClosestOrgs } from '../util/nearbyLocationCal';
-import { all } from 'axios';
 
 dotenv.config();
 
@@ -18,11 +17,13 @@ let imageInfoPrompt = "Identify the exact species of the animal in this image. B
 
 let imageInfoSummaryPrompt = "Below is detailed information about an animal. Please condense the details into a concise, information-dense summary that captures essential characteristics such as habitat, behavior, physical attributes, and conservation status. The resulting summary should be optimized for an AI to accurately match this animal with the best NGO or organization by comparing it with their summarized information.";
 
-let bestNgoMatchPrompt = `"Below is detailed information about an animal species, followed by a list of NGOs with their respective names and summaries. Evaluate the provided data and rank the NGOs based on how well their mission, expertise, and focus align with the needs of the animal species. Your response should present the NGOs in descending order of suitability (the best suited first) and must be formatted in JSON.
+let bestNgoMatchPrompt = `Below is detailed information about an animal species, followed by a list of NGOs with their respective names and summaries. Evaluate the provided data and rank the NGOs based on how well their mission, expertise, and focus align with the needs of the animal species. Your response should present the NGOs in descending order of suitability (the best suited first) and must be formatted in JSON.
 
 Each NGO entry in the JSON response must include:
 1. The NGO's **name**.
 2. A **reason** explaining why the NGO is ranked in that position based on its compatibility with the provided animal species data.
+
+If no NGO is a perfect match for the species, still provide the most relevant options based on general wildlife protection, habitat conservation, or related efforts.
 
 Ensure your response follows this format:
 
@@ -43,8 +44,7 @@ Ensure your response follows this format:
   ]
 }
 
-Ensure that your ranking reflects the compatibility between the animal species data and each NGO's focus, with clear justification provided in the 'reason' field for each NGO. NOTE: always return in the above format, if not able to make rankings, simply return nothing but in above format."
-`;
+Ensure that your ranking reflects the best possible match between the animal species data and each NGO's focus, even if exact alignment is not found. Always return a list of organizations in the above format—never return an empty response.`
 
 export const imageResponse = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const firebaseId = req.headers['x-firebase-id'];
