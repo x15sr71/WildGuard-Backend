@@ -13,6 +13,8 @@ RUN npm install
 # Copy the entire project into the container, including the .env file
 COPY . .
 
+# Run Prisma generate to create the client
+RUN npx prisma generate
 
 # Build TypeScript files
 RUN npm run build
