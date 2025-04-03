@@ -116,7 +116,7 @@ export const imageResponse = async (req: Request, res: Response, next: NextFunct
 
     let finalResponse = (await closeOrgs).map(org => {
       const matchingOrg = allNgoData.find((ngo: any) => ngo?.name === org?.name);
-      if (matchingOrg) {
+      if (matchingOrg && !("error" in matchingOrg)) {
         return {
           ...org,
           location: matchingOrg.location,
@@ -131,6 +131,7 @@ export const imageResponse = async (req: Request, res: Response, next: NextFunct
       console.warn(`No match found for NGO: ${org.name}`);
       return org; // Return org without additional properties
     });
+    
     
     finalResponse = [{ imageSummary: imageSummary.text } as any, ...finalResponse];
     
