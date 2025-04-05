@@ -92,7 +92,7 @@ app.post("/auth/login", authenticate, async (req: AuthenticatedRequest, res: Res
 });
 
 // 🚀 Start the server
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const server = app.listen(PORT, () =>
   console.log(`🔥 Server running on http://localhost:${PORT}`)
 );
