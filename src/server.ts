@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import admin from "firebase-admin";
+import path from "path";
 import { authenticate, AuthenticatedRequest } from "./middlewares/middlewares";
 import { findOrCreateUser } from "./services/userService";
 import { imageResponse } from "./services/imageResponse";
@@ -9,6 +10,7 @@ import { imageResponse } from "./services/imageResponse";
 import { createAnimalHelpPost } from "./services/concernPost";
 import { handlePostRequest } from "./services/postRequestHandler";
 import { volunteerProfileHandler } from "./services/volunteerProfileHandler";
+import postsRouter from "./middlewares/postRoute";
 
 dotenv.config();
 
@@ -27,13 +29,16 @@ console.log("✅ Firebase initialized successfully!");
 
 const app = express();
 
+
+app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 app.use(express.json({ limit: '100mb' })); // Move to top and increase limit
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
-app.use(cors());
+app.use(cors({
+  origin: "http://localhost:5173", // allow only your frontend origin
+  credentials: true,
+}));
 
-
-
-
+app.use("/api/posts", postsRouter);
 
 app.post("/volunteer-profile", authenticate, volunteerProfileHandler);
 

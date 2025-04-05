@@ -43,6 +43,8 @@ model AnimalHelpPost {
   geoLocation       String? @default("") // Used for raw SQL queries
   noticedAt         DateTime 
   currentActions    String   
+  animalType        String?
+  urgencyLevel     String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 }
