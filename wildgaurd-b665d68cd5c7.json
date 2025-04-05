@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "wildgaurd",
+  "private_key_id": "b665d68cd5c7813e867f8c9cd709e97698a0191d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCvu6TXU5iD3lVj\nVK2b5hpTLV9/w0of7zVyVxsbVJJmG6gXK7+x10xn5KcyxG7jL1uchsepNsQ5gVSi\nLjDJY/SgzR8GPHAOUHrPvIUs46ZyKpAswA+lnxHyaumd4O799zyPmQOWc4hPrtPc\n43Lk2uFXutlmkk80onVySaL5oWCXgpcMXsDbOT59ZOg7SoNB/hV1fRoIpdFmgcs5\nIbIgZqa/HdNpIbxgibGmUzodOih1J0t76if5NQDS/RGpKjs3jFhPygK8IHnEobpI\nPig5kd21GHqmse/+q/oT4eBlDkjaAVZqusXadPecbJ9FZrO2kXIUJ4WMmLX3IVQX\nNKbZ/94DAgMBAAECggEAGn5vQTlstoDYHcQf8m+UC3M9QR1XuQ3O4ICqaQnsknFb\n+7ZQTccYUVeDL5+22hCDPsuBIY1MsyDA+jx9hXdI489Y/I8zE61lfpk8+MIPj4nE\nN8Ly+PTM91/P/cnyLh7OphWbGV0ssVq5vUUbRs6LB7d3XEP1pglSLJtWc001q1G4\nbYHmyEQeHkHeDq/AiaHBL5DUW7qECKQYpUWxp47RVmAK3c5v7jgCMWJPGG5qMChZ\nCqH3ofJg3Qte9lH+Ptd99tFK6AmdhnmrgrA3bA0786IMxpOjtRtJY+SUYy3VeRxY\nX3zpUR4S3BUyYcTPb3tyEbEs6/pHJAJNSKaAFOEwxQKBgQDYP3kr/AOGRoFNRJXf\nDB4DsOhyGd6QnpenubvWSH0lt6red2m4MKtIyF7MY9QqOdQwHxQ7x8g7Gwf8ZFKE\nYtgGD14q8T2Nc8Un+pLq1Cig3ol2712PrfBhR2U6R7/gZW+m1glzWYn/Q72+Toyd\ngWJHJESZxMWwT0JXJ2nZKfaH/QKBgQDQCY4+4vGD+I0Ie3Vglt+RovMZOJXMOPEj\nyTtD5yJ+tIdG0pFNHleukRFlZqfgzzqQuIQ/pnIGIcQjv1gvccZ53APMDAJ6ucpe\nz8tJg8/dlbhD1tMu+iFKzmEMQabYuSFyIKYpCNRgpDvugMA5QYHiAsf42RaAKXWh\nxmGauf3d/wKBgQDV3nDIv4X81t4qvRo8bo+AtwYtUsh731291EOhui+Ljgq/2voD\n4J6GbSTUoCbFXEwvC43HUd8GFcXgKJgztk5QMALCFbT6oPTshTWoaguEjpMFvdaa\nszx5+VJ0QWHTXH8AUc8m9fc1LpoKDUWkwMGh+oyeR638oWbLK3/T91yLQQKBgQDL\nCAhjJ2k9ut0pYhPz6ErY/4bxHmBTp17v5fyJEJKBxf4gCHD2Kp64J6wqoj1FEfm+\nM9YdqHuvsFST7rJJ22gwlaC/CxmAXMI8Nd/YJ2Q+hVgIHSiNuF+1eiUMqSYEbOlP\nUL3ZXlym1KII6m6vclcoFD7FhliHS+8Zq1qmfs5cUQKBgQDFk0D5aJafJ3UeXzob\nGAaCYv7oWQKz4Uze9sSz9rb9nyAz8ZM28WCUU/nHmh/KeIW4qWlELqEtJeB3fxuJ\n0XvoY8cO+hs8B3vKKl1SR5oVVk0Xc10J7gof7Yfk1W4YJlljd9RK0U8I+ppx8kTq\nVyc+hIpyqv1o3P/BWs4JUzFdIg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "wildgaurd-uploader@wildgaurd.iam.gserviceaccount.com",
+  "client_id": "100281026608527203345",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/wildgaurd-uploader%40wildgaurd.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
