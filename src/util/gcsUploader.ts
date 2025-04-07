@@ -1,7 +1,7 @@
 // gcsUploader.ts
 import { Storage } from "@google-cloud/storage";
 
-const storage = new Storage();
+const storage = new Storage(); // Uses Cloud Run's service account
 const bucket = storage.bucket(process.env.GCS_BUCKET_NAME!);
 
 export const uploadToGCS = async (
@@ -20,12 +20,14 @@ export const uploadToGCS = async (
 
   return new Promise((resolve, reject) => {
     stream.on("error", reject);
+
     stream.on("finish", async () => {
       try {
-        // Generate a signed URL valid for 7 days
+        // Generate a V4 signed URL valid for 7 days
         const [url] = await file.getSignedUrl({
+          version: "v4",
           action: "read",
-          expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+          expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days in ms
         });
 
         resolve(url);
