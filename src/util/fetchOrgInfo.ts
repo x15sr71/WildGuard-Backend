@@ -12,13 +12,17 @@ export async function fetchOrganizations(organizationNames: string[]) {
       },
     });
 
-    console.log(
-      `**********************************\n${JSON.stringify(organizations, null, 2)}\n**********************************`
-    );
+    // console.log(
+    //   `**********************************\n${JSON.stringify(organizations, null, 2)}\n**********************************`
+    // );
 
     // Reorder results to match organizationNames order
-    const orderedOrganizations = organizationNames.map((name) =>
-      organizations.find((org) => org.name === name) || { name, error: "Not Found" }
+    const orderedOrganizations = organizationNames.map(
+      (name) =>
+        organizations.find((org) => org.name === name) || {
+          name,
+          error: "Not Found",
+        }
     );
 
     console.log("Ordered Organizations:", orderedOrganizations);
