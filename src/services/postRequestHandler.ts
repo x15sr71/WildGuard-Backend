@@ -18,6 +18,7 @@ const upload = multer({
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
+      console.warn("Blocked file due to invalid mimetype:", file.mimetype);
       cb(new Error('Invalid file type. Only JPEG, PNG, GIF, and WEBP files are allowed.') as any);
     }
   }
@@ -25,21 +26,36 @@ const upload = multer({
 const uploadMiddleware = upload.array('images');
 
 export const handlePostRequest = async (req: Request, res: Response) => {
+  console.log("Received POST request to /api/post-request");
+
   uploadMiddleware(req, res, async (err) => {
     if (err) {
-      console.error("Upload error:", err);
+      console.error("Upload middleware error:", err);
       return res.status(400).json({ error: err.message });
     }
 
     try {
+      console.log("Request body keys:", Object.keys(req.body));
+      console.log("Raw req.body.data:", req.body.data);
+
       const formData = JSON.parse(req.body.data);
+      console.log("Parsed formData:", formData);
+
       const uploadedFiles = req.files as Express.Multer.File[];
+      console.log("Uploaded files count:", uploadedFiles?.length || 0);
 
       // Upload files to GCS and get public URLs
       const imageUrls: string[] = [];
       for (const file of uploadedFiles) {
-        const gcsUrl = await uploadToGCS(file.buffer, file.mimetype, `uploads/${uuidv4()}-${file.originalname}`);
-        imageUrls.push(gcsUrl);
+        try {
+          console.log(`Uploading file: ${file.originalname}, type: ${file.mimetype}`);
+          const gcsUrl = await uploadToGCS(file.buffer, file.mimetype, `uploads/${uuidv4()}-${file.originalname}`);
+          console.log(`Uploaded to GCS: ${gcsUrl}`);
+          imageUrls.push(gcsUrl);
+        } catch (uploadErr) {
+          console.error(`Failed to upload ${file.originalname}:`, uploadErr);
+          throw new Error(`Failed to upload image: ${file.originalname}`);
+        }
       }
 
       const {
@@ -52,14 +68,27 @@ export const handlePostRequest = async (req: Request, res: Response) => {
         urgencyLevel
       } = formData;
 
+      console.log("Looking up user with Firebase ID:", firebaseId);
+
       const user = await prisma.user.findUnique({
         where: { firebaseId },
         include: { volunteerProfile: true },
       });
 
-      if (!user || !user.volunteerProfile) {
-        return res.status(404).json({ error: "User or volunteer profile not found" });
+      if (!user) {
+        console.warn("User not found for Firebase ID:", firebaseId);
+        return res.status(404).json({ error: "User not found" });
       }
+
+      if (!user.volunteerProfile) {
+        console.warn("User exists but no volunteer profile for:", firebaseId);
+        return res.status(404).json({ error: "Volunteer profile not found" });
+      }
+
+      console.log("User and volunteer profile found:", {
+        userId: user.id,
+        volunteerId: user.volunteerProfile.userId
+      });
 
       let geoLocationString: string | null = null;
       let placeValue = null;
@@ -73,6 +102,18 @@ export const handlePostRequest = async (req: Request, res: Response) => {
           geoLocationString = `${latitude},${longitude}`;
         }
       }
+
+      console.log("Creating animalHelpPost with the following data:", {
+        volunteerId: user.volunteerProfile.userId,
+        images: imageUrls,
+        description,
+        incidentLocation: placeValue,
+        geoLocation: geoLocationString,
+        noticedAt: new Date(validNoticedAt),
+        currentActions,
+        animalType,
+        urgencyLevel
+      });
 
       const newHelpPost = await prisma.animalHelpPost.create({
         data: {
@@ -88,9 +129,14 @@ export const handlePostRequest = async (req: Request, res: Response) => {
         },
       });
 
+      console.log("Successfully created animalHelpPost with ID:", newHelpPost.id);
       return res.status(201).json(newHelpPost);
-    } catch (error) {
-      console.error("Error handling post request:", error);
+
+    } catch (error: any) {
+      console.error("Unhandled error in handlePostRequest:", error);
+      if (error instanceof Error) {
+        console.error("Stack trace:", error.stack);
+      }
       return res.status(500).json({ error: "Internal server error" });
     }
   });
