@@ -1,23 +1,26 @@
 # Use an official Node.js runtime as a parent image
 FROM node:18
 
-# Set the working directory inside the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json first to leverage Docker cache
+# Copy only package files to leverage caching
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the entire project into the container, including the .env file
+# Copy rest of the project (excluding files listed in .dockerignore)
 COPY . .
 
-# Run Prisma generate to create the client
+# Generate Prisma client
 RUN npx prisma generate
 
-# Build TypeScript files
+# Build TypeScript
 RUN npm run build
 
-# Start the server
+# Use production environment (optional best practice)
+ENV NODE_ENV=production
+
+# Start the app
 CMD ["node", "dist/src/server.js"]
