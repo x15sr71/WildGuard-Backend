@@ -19,19 +19,22 @@ export const uploadToGCS = async (
   });
 
   return new Promise((resolve, reject) => {
-    stream.on("error", reject);
+    stream.on("error", (err) => {
+      console.error("❌ GCS Upload Error:", err); // ← ADD THIS
+      reject(err);
+    });
 
     stream.on("finish", async () => {
       try {
-        // Generate a V4 signed URL valid for 7 days
         const [url] = await file.getSignedUrl({
           version: "v4",
           action: "read",
-          expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days in ms
+          expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         });
 
         resolve(url);
       } catch (error) {
+        console.error("❌ Failed to generate signed URL:", error); // ← ADD THIS
         reject(error);
       }
     });

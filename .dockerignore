@@ -1,0 +1,10 @@
+# Exclude sensitive or unnecessary files from the container
+.env
+*.json
+!package.json
+!tsconfig.json
+*.log
+node_modules
+.git
+coverage
+dist
