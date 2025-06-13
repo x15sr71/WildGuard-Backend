@@ -129,7 +129,7 @@ export const handlePostRequest = async (req: Request, res: Response) => {
         },
       });
 
-      console.log("Successfully created animalHelpPost with ID:", newHelpPost.id);
+      console.log("Successfully created animalHelpPost  with ID:", newHelpPost.id);
       return res.status(201).json(newHelpPost);
 
     } catch (error: any) {
