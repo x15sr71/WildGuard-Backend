@@ -35,7 +35,7 @@ app.use(express.json({ limit: '100mb' })); // Move to top and increase limit
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(cors({
   origin: [
-    "https://wildguard-client-642935703539.asia-south1.run.app", 
+    "https://wildgaurd-backend-794553988056.asia-south1.run.app", 
     "http://localhost:5173"
   ],
   credentials: true,
