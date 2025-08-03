@@ -36,7 +36,8 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use(cors({
   origin: [
     "https://wildgaurd-backend-794553988056.asia-south1.run.app", 
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:8080"
   ],
   credentials: true,
 }));

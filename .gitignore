@@ -1,7 +1,8 @@
 node_modules
 # Keep environment variables out of version control
-
-
+alien-array-464004-j0-b3c81be76fe4.json
+wild-d9373-f2ea8b728d0e.json
+supabase_backup.sql
 dist
 .env    
 
