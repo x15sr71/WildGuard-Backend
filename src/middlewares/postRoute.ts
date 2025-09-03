@@ -104,7 +104,7 @@ const regenerateSignedUrls = async (imageUrls: string[], postId: string) => {
         const [newUrl] = await file.getSignedUrl({
           version: "v4",
           action: "read",
-          expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 days
+          expires: Date.now() + 14 * 24 * 60 * 60 * 1000, // 7 days
           queryParams: { cacheBuster: Date.now().toString() },
         });
 
