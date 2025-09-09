@@ -12,7 +12,9 @@ import { handlePostRequest } from "./services/postRequestHandler";
 import { volunteerProfileHandler } from "./services/volunteerProfileHandler";
 import postsRouter from "./middlewares/postRoute";
 
+
 dotenv.config();
+
 
 
 // Ensure all required environment variables are set
@@ -25,9 +27,12 @@ if (
   process.exit(1);
 }
 
+
 console.log("✅ Firebase initialized successfully!");
 
+
 const app = express();
+
 
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
@@ -43,9 +48,12 @@ app.use(cors({
 }));
 
 
+
 app.use("/api/posts", postsRouter);
 
+
 app.post("/volunteer-profile", authenticate, volunteerProfileHandler);
+
 
 // Global logger for every incoming request
 app.use((req, res, next) => {
@@ -53,13 +61,17 @@ app.use((req, res, next) => {
   next();
 });
 
+
 app.post("/api/post-request", async (req, res) => {
   await handlePostRequest(req, res);
 });
 
+
 app.post("/animalHelpPost", createAnimalHelpPost)
 
+
 // app.post("/location", saveUserLocation)
+
 
 // ✅ Public Route
 app.get("/", (req: Request, res: Response) => {
@@ -67,8 +79,10 @@ app.get("/", (req: Request, res: Response) => {
   res.send("🚀 Firebase Auth Server is Running!");
 });
 
+
 // Endpoint to analyze an image
 app.post("/gemini", express.raw({ limit: '100mb', type: 'image/*' }), imageResponse);
+
 
 // 🔒 Protected Route (Example)
 app.get("/protected", authenticate, (req: AuthenticatedRequest, res: Response) => {
@@ -78,6 +92,7 @@ app.get("/protected", authenticate, (req: AuthenticatedRequest, res: Response) =
     user: req.user,
   });
 });
+
 
 // 🔒 API to Verify/Process Firebase Login and Store/Update User in DB
 app.post("/auth/login", authenticate, async (req: AuthenticatedRequest, res: Response) => {
@@ -96,24 +111,50 @@ app.post("/auth/login", authenticate, async (req: AuthenticatedRequest, res: Res
   }
 });
 
+
 // 🚀 Start the server
 const PORT = process.env.PORT || 8080;
+
 
 const server = app.listen(PORT, () =>
   console.log(`🔥 Server running on http://localhost:${PORT}`)
 );
 
-// Gracefully handle process termination
+
+// Improved graceful shutdown handling
+let isShuttingDown = false;
+
 const shutdown = (signal: string) => {
-  console.log(`\n🛑 Received ${signal}, shutting down server...`);
-  server.close(() => {
-    console.log("✅ Server closed. Exiting process.");
+  if (isShuttingDown) {
+    console.log("⚠️ Shutdown already in progress...");
+    return;
+  }
+  
+  isShuttingDown = true;
+  console.log(`\n🛑 Received ${signal}, shutting down server gracefully...`);
+  
+  // Set a timeout to force exit if server doesn't close within 10 seconds
+  const forceExit = setTimeout(() => {
+    console.log("⚠️ Force closing server after timeout");
+    process.exit(1);
+  }, 10000);
+  
+  server.close((err) => {
+    clearTimeout(forceExit);
+    if (err) {
+      console.error("❌ Error during server shutdown:", err);
+      process.exit(1);
+    }
+    console.log("✅ Server closed gracefully. Goodbye!");
     process.exit(0);
   });
 };
 
-process.on("SIGINT", () => shutdown("SIGINT"));
+
+// Handle Ctrl+C (SIGINT) and other termination signals
+process.on("SIGINT", () => shutdown("SIGINT (Ctrl+C)"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
+
 
 process.on("uncaughtException", (error) => {
   console.error("🚨 Uncaught Exception:", error);
