@@ -114,7 +114,7 @@ wildguard-backend/
 
 ## Contributing
 
-We welcome contributions! Whether you’re fixing a bug, improving documentation, or adding a new feature, your help is greatly appreciated.  
+We welcome contributions! Whether you’re fixing a bug, improving documentation, or adding a new feature, your help is greatly appreciated!
 
 ✨ Here’s how you can contribute:
 - 🐛 **Report Issues** → Open an issue if you find bugs, have questions, or want to request new features.  
