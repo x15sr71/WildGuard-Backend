@@ -12,10 +12,7 @@ import { handlePostRequest } from "./services/postRequestHandler";
 import { volunteerProfileHandler } from "./services/volunteerProfileHandler";
 import postsRouter from "./middlewares/postRoute";
 
-
 dotenv.config();
-
-
 
 // Ensure all required environment variables are set
 if (
@@ -27,13 +24,9 @@ if (
   process.exit(1);
 }
 
-
 console.log("✅ Firebase initialized successfully!");
 
-
 const app = express();
-
-
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 app.use(express.json({ limit: '100mb' })); // Move to top and increase limit
@@ -47,13 +40,9 @@ app.use(cors({
   credentials: true,
 }));
 
-
-
 app.use("/api/posts", postsRouter);
 
-
 app.post("/volunteer-profile", authenticate, volunteerProfileHandler);
-
 
 // Global logger for every incoming request
 app.use((req, res, next) => {
@@ -61,17 +50,11 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.post("/api/post-request", async (req, res) => {
   await handlePostRequest(req, res);
 });
 
-
 app.post("/animalHelpPost", createAnimalHelpPost)
-
-
-// app.post("/location", saveUserLocation)
-
 
 // ✅ Public Route
 app.get("/", (req: Request, res: Response) => {
@@ -111,15 +94,12 @@ app.post("/auth/login", authenticate, async (req: AuthenticatedRequest, res: Res
   }
 });
 
-
 // 🚀 Start the server
 const PORT = process.env.PORT || 8080;
-
 
 const server = app.listen(PORT, () =>
   console.log(`🔥 Server running on http://localhost:${PORT}`)
 );
-
 
 // Improved graceful shutdown handling
 let isShuttingDown = false;
@@ -150,11 +130,9 @@ const shutdown = (signal: string) => {
   });
 };
 
-
 // Handle Ctrl+C (SIGINT) and other termination signals
 process.on("SIGINT", () => shutdown("SIGINT (Ctrl+C)"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
-
 
 process.on("uncaughtException", (error) => {
   console.error("🚨 Uncaught Exception:", error);
