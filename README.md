@@ -39,7 +39,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 - 🦊 Node.js (Latest LTS recommended)
 - 🐘 PostgreSQL or Supabase account
 - 🔑 Google Cloud API Key (Gemini + Vision enabled)
-- 🔥 Firebase Project & Service Account credentials
+- 🔥 Firebase Project and Service Account credentials
 
 ---
 
