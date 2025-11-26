@@ -107,7 +107,7 @@ wildguard-backend/
 ├── package-lock.json          # Lockfile for npm dependencies
 ├── package.json               # Project metadata and dependencies
 ├── regen.js                   # Possibly regenerates Prisma types or other data
-├── supabase_backup.sql        # SQL dump of your Supabase PostgreSQL database
+├── supabase_backup.sql        # SQL dump of Supabase PostgreSQL database
 └── tsconfig.json              # TypeScript configuration
 
 ````
