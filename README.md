@@ -12,7 +12,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
   - Google Cloud Vision (for object detection and classification)
 - 🗃️ **PostgreSQL Database** for scalable and relational data management
 - ⚙️ **Prisma ORM** with Supabase for local development
-- 🌍 **Google Maps integration support** for organization lookups and location handling
+- 🌍 **Google Maps integration support** for organization lookups & location handling
 - 🔄 **Firebase Admin SDK** for verifying users authenticated via Firebase
 
 ---
