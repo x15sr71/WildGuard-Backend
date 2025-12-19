@@ -6,7 +6,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 
 ## 🚀 Features
 
-- 🔐 **Secure REST APIs** for authentication, NGO and volunteer management
+- 🔐 **Secure REST APIs** for authentication, NGO & volunteer management
 - 📸 **AI-Powered Image Recognition** using:
   - Google Gemini API (for multimodal image + prompt understanding)
   - Google Cloud Vision (for object detection and classification)
