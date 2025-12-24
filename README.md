@@ -1,6 +1,6 @@
 # 🌿 WildGuard Backend
 
-WildGuard is a platform built to assist in wildlife rescue efforts by connecting people with the most suitable NGOs, shelters, and volunteers. This repository contains the backend codebase, built using **Node.js (Express)**, **TypeScript**, and **PostgreSQL**, with support for **AI-powered image analysis** via **Google Gemini API** and **Google Cloud Vision**.
+WildGuard is a platform built to assist in wildlife rescue efforts by connecting people with the most suitable NGOs, shelters & volunteers. This repository contains the backend codebase, built using **Node.js (Express)**, **TypeScript**, and **PostgreSQL**, with support for **AI-powered image analysis** via **Google Gemini API** and **Google Cloud Vision**.
 
 ---
 
