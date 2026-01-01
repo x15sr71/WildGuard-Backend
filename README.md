@@ -95,7 +95,7 @@ wildguard-backend/
 │   ├── middlewares/           # Express or custom middlewares (e.g., auth, error handling)
 │   ├── services/              # Core service/business logic (e.g., user, NGO, image)
 │   ├── util/                  # Utility functions (e.g., formatters, helpers)
-│   ├── firebase.ts            # Firebase Admin SDK setup and helper functions
+│   ├── firebase.ts            # Firebase Admin SDK setup & helper functions
 │   └── server.ts              # Entry point – Express server setup
 ├── .dockerignore              # Files/directories ignored by Docker builds
 ├── .env                       # Environment variables
