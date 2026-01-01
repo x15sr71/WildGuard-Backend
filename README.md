@@ -67,7 +67,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
    GCP_PROJECT_ID=your_gcp_project_id
 
    ```   
-4. **Run Prisma database migration and seed**    
+4. **Run Prisma database migration & seed**    
      ```bash
    npx prisma migrate dev
    npm run seed
