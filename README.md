@@ -118,7 +118,7 @@ We welcome contributions! Whether you’re fixing a bug, improving documentation
 
 ✨ Here’s how you can contribute:
 - 🐛 **Report Issues** → Open an issue if you find bugs, have questions, or want to request new features.  
-- 🔧 **Submit Pull Requests** → Fork the repo, create a feature/bugfix branch & submit a PR with clear descriptions.  
+- 🔧 **Submit Pull Requests** → Fork the repo, create a feature/bugfix branch and submit a PR with clear descriptions.  
 - 📖 **Improve Documentation** → Help us make setup, usage and contribution guidelines clearer.  
 - 💡 **Suggest Enhancements** → Share ideas on how the platform can be more useful for wildlife rescue efforts.  
 
