@@ -88,7 +88,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 ```bash
 wildguard-backend/
 ├── node_modules/               # Dependencies installed via npm
-├── prisma/                     # Prisma schema & migrations
+├── prisma/                     # Prisma schema and migrations
 ├── src/                        # Source code
 │   ├── auth/                   # Authentication-related logic (e.g., JWT, login/signup)
 │   ├── LLM/                    # Code related to large language model or AI API integration
