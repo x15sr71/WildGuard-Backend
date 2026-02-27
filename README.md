@@ -10,7 +10,7 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 - 📸 **AI-Powered Image Recognition** using:
   - Google Gemini API (for multimodal image + prompt understanding)
   - Google Cloud Vision (for object detection and classification)
-- 🗃️ **PostgreSQL Database** for scalable & relational data management
+- 🗃️ **PostgreSQL Database** for scalable and relational data management
 - ⚙️ **Prisma ORM** with Supabase for local development
 - 🌍 **Google Maps integration support** for organization lookups & location handling
 - 🔄 **Firebase Admin SDK** for verifying users authenticated via Firebase
