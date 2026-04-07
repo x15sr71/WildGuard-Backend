@@ -4,6 +4,37 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 
 ---
 
+## 📸 Screenshots
+
+> A look at the frontend powered by this backend — showcasing AI-based animal detection and seamless coordination with nearby rescue organizations.
+
+<p align="center">
+  <img src="assets/screenshots/hero.png" width="800"/>
+</p>
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="assets/screenshots/results.png" width="400"/><br/><br/>
+      <b>Animal Detection & Nearby NGO Recommendations</b>
+    </td>
+    <td align="center">
+      <img src="assets/screenshots/how-it-works.png" width="400"/><br/>
+      <b>How It Works</b>
+    </td>
+  </tr>
+</table>
+
+<details>
+<summary>▶️ View more screens</summary>
+
+<br>
+<img src="assets/screenshots/footer.png" width="800"/>
+<img src="assets/screenshots/create-post.png" width="800"/><br/><br/>
+<img src="assets/screenshots/posts.png" width="800"/><br/>
+
+</details>
+
 ## 🚀 Features
 
 - 🔐 **Secure REST APIs** for authentication, NGO and volunteer management
