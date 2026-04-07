@@ -85,32 +85,41 @@ WildGuard is a platform built to assist in wildlife rescue efforts by connecting
 | `npm run seed`  | Seed DB using Prisma script |
 
 📁 Project Structure
-```bash
-wildguard-backend/
-├── node_modules/               # Dependencies installed via npm
-├── prisma/                     # Prisma schema and migrations
-├── src/                        # Source code
-│   ├── auth/                   # Authentication-related logic (e.g., JWT, login/signup)
-│   ├── LLM/                    # Code related to large language model or AI API integration
-│   ├── middlewares/           # Express or custom middlewares (e.g., auth, error handling)
-│   ├── services/              # Core service/business logic (e.g., user, NGO, image)
-│   ├── util/                  # Utility functions (e.g., formatters, helpers)
-│   ├── firebase.ts            # Firebase Admin SDK setup & helper functions
-│   └── server.ts              # Entry point – Express server setup
-├── .dockerignore              # Files/directories ignored by Docker builds
-├── .env                       # Environment variables
-├── .gitignore                 # Files ignored by Git
-├── alien-array-...json        # Google Cloud service account JSON key (used by Vision API)
-├── deleteFirebaseAccount.ts   # Script to delete Firebase user accounts
-├── Dockerfile                 # Docker image definition
-├── fetchOrg.ts                # Likely a standalone script for fetching org data
-├── package-lock.json          # Lockfile for npm dependencies
-├── package.json               # Project metadata and dependencies
-├── regen.js                   # Possibly regenerates Prisma types or other data
-├── supabase_backup.sql        # SQL dump of Supabase PostgreSQL database
-└── tsconfig.json              # TypeScript configuration
 
-````
+The backend follows a modular service-oriented architecture, integrating AI-based image analysis, geolocation services, and real-time coordination between volunteers and organizations.
+
+```text
+WildGuard-Backend/
+├── assets/
+│   └── screenshots/            # UI preview images used in README/demo
+├── prisma/
+│   ├── migrations/             # Database migration history
+│   ├── schema.prisma           # Prisma schema (DB models)
+│   ├── prisma.ts               # Prisma client setup
+│   └── seed.ts                 # Seed script for development
+├── src/
+│   ├── firebase.ts             # Firebase Admin SDK setup
+│   ├── LLM/                    # AI/ML logic (image analysis & summaries)
+│   ├── middlewares/            # Express middlewares (routes, search, validation)
+│   ├── services/               # Core business logic
+│   │   ├── concernPost.ts
+│   │   ├── imageResponse.ts
+│   │   ├── postRequestHandler.ts
+│   │   ├── userService.ts
+│   │   ├── visionService.ts
+│   │   └── volunteerProfileHandler.ts
+│   ├── util/                   # Utility helpers (location, uploads, org data)
+│   └── server.ts               # Express server entry point
+├── deleteFirebaseAccount.ts    # Script to remove Firebase users
+├── fetchOrg.ts                 # Script to fetch NGO/org data
+├── regen.js                    # Utility script (e.g., regenerate data/types)
+├── Dockerfile                  # Container configuration
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── README.md
+```
+
 
 ## Contributing
 
